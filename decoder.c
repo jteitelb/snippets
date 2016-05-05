@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 #define DIGITS 10
@@ -7,7 +6,7 @@
 
 void decode(int numRemaining, int* remaining, char* previous)
 {
-    char* tmp;
+    char tmp[DIGITS + 1];
     char possible[MAX_VALS_PER_DIGIT + 1];
     if (numRemaining == 0)
     {
@@ -52,7 +51,6 @@ void decode(int numRemaining, int* remaining, char* previous)
         }
         for(int i = 0; i < strlen(possible); i++)
         {
-            tmp = malloc(sizeof(char)*(strlen(previous) + 2));
             strcpy(tmp, previous);
             tmp[strlen(previous)] = possible[i];
             tmp[strlen(previous)+1] = '\0';
