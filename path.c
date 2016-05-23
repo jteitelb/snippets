@@ -1,3 +1,4 @@
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -40,15 +41,15 @@ int main(int argc, char* argv[])
     {
         for (j = 0; j < MAX; j++)
         {
-            vertex[index].pos.x = i;
-            vertex[index].pos.y = j;
-            vertex[index].distance = INT_MAX;
-            vertex[index].prev = NULL;
+            list[index].pos.x = i;
+            list[index].pos.y = j;
+            list[index].distance = INT_MAX;
+            list[index].prev = NULL;
             index++;
         }
     }
     startIndex = start.x * MAX + start.y;
-    vertex[startIndex].distance = 0;
+    list[startIndex].distance = 0;
 
 
     printf( "start: (%d, %d)\nend: (%d, %d)\n", start.x, start.y, end.x, end.y );

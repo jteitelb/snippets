@@ -1,10 +1,15 @@
+CC=gcc
 CFLAGS=-std=c99 -g
 
-decoder: decoder.c
-kin: kin.c
-path: path.c
+all: ackermann babylonian decoder hodor kin path
+
+babylonian: babylonian.c
+	$(CC) $(CFLAGS) babylonian.c -lm -o babylonian 
 
 clean:
+	rm -f ackermann
+	rm -f babylonian
 	rm -f decoder
+	rm -f hodor
 	rm -f kin
 	rm -f path
