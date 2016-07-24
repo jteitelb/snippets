@@ -4,7 +4,7 @@
 #include <ctype.h>
 
 #define LENGTH 3  // length of sequences chosen
-#define NUM_ROUNDS 10
+#define NUM_ROUNDS 10000
 
 typedef struct Player
 {
@@ -14,10 +14,14 @@ typedef struct Player
 
 void getSequence(Player* playerA, Player* playerB);
 int compareSequence(char* sequence1, char* sequence2);
+void simulateMatchup(int sequence1, int sequence2);
 void playRound(Player* playerA, Player* playerB);
+void generateSequence(int sequence, char* stringForm);
 
 int main(void)
 {
+    // for interactive play
+    /*
     Player playerA;
     Player playerB;
     char first = 1;
@@ -34,7 +38,66 @@ int main(void)
         first = 0;
     }
     while (compareSequence(playerA.sequence, playerB.sequence));
+    */
+    char sequence[LENGTH+1];
+    sequence[LENGTH] = '\0';
+
+    for(int i = 0; i < 8; i++)
+    {
+        generateSequence(i, sequence);
+        printf("\t%s", sequence);
+    }
+    printf("\n");
+
     srand(time(NULL));
+    for(int i = 0; i < 8; i++)
+    {
+        generateSequence(i, sequence);
+        printf("%s\t", sequence);
+        for(int j = 0; j < i; j++)
+        {
+            simulateMatchup(i, j);
+            printf("\t");
+        }
+        printf("\n");
+    }
+    
+    /*
+    printf("in main, player A:\n");
+    for (int j = 0; j < LENGTH; j++)
+    {
+        printf("%c", playerA.sequence[j]);
+    }
+    printf("\n");
+    printf("in main, player B:\n");
+    for (int j = 0; j < LENGTH; j++)
+    {
+        printf("%c", playerB.sequence[j]);
+    }
+    printf("\n");
+    */
+
+    //for interactive play
+    /*
+    for (int i = 0; i < NUM_ROUNDS; i++)
+    {
+        printf("Starting Round %d:\n", i + 1);
+        playRound(&playerA, &playerB);
+    }
+    printf("Results:\n");
+    printf("Player A: %d wins\nPlayer B: %d wins\n", playerA.wins, playerB.wins);
+    */
+}
+
+void simulateMatchup(int sequence1, int sequence2)
+{
+    Player playerA;
+    Player playerB;
+
+    playerA.wins = 0;
+    playerB.wins = 0;
+    generateSequence(sequence1, playerA.sequence);
+    generateSequence(sequence2, playerB.sequence);
     
     /*
     printf("in main, player A:\n");
@@ -52,12 +115,12 @@ int main(void)
     */
     for (int i = 0; i < NUM_ROUNDS; i++)
     {
-        printf("Starting Round %d:\n", i + 1);
+        //printf("Starting Round %d:\n", i + 1);
         playRound(&playerA, &playerB);
     }
-    printf("Results:\n");
-    printf("Player A: %d wins\nPlayer B: %d wins\n", playerA.wins, playerB.wins);
-
+    //printf("Results:\n");
+    //printf("Player A: %d wins\nPlayer B: %d wins\n", playerA.wins, playerB.wins);
+    printf("%.3f", playerA.wins/(float)NUM_ROUNDS);
 
 }
 
@@ -67,19 +130,19 @@ void playRound(Player* playerA, Player* playerB)
     for(int i = 0; i < LENGTH; i++)
     {
         last[i] = rand()%2 == 0? 'H' : 'T';
-        printf("%c", last[i]); //test
+        //printf("%c", last[i]); //test
     }
     while(1) // This program can run forever... sort of
     {
         if (compareSequence(playerA->sequence, last))
         {
-            printf("\nPlayer A wins!\n"); //test
+            //printf("\nPlayer A wins!\n"); //test
             playerA->wins++;
             return;
         }
         if (compareSequence(playerB->sequence, last))
         {
-            printf("\nPlayer B wins!\n"); //test
+            //printf("\nPlayer B wins!\n"); //test
             playerB->wins++;
             return;
         }
@@ -88,7 +151,7 @@ void playRound(Player* playerA, Player* playerB)
             last[i] = last[i+1];
         }
         last[LENGTH-1] = rand()%2 == 0? 'H' : 'T';
-        printf("%c", last[LENGTH-1]); //test
+        //printf("%c", last[LENGTH-1]); //test
     }
 }
 
@@ -144,4 +207,13 @@ int compareSequence(char* sequence1, char* sequence2)
         }
     }
     return 1;
+}
+
+void generateSequence(int sequence, char* stringForm)
+{
+    for (int i = 0; i < LENGTH; i++)
+    {
+        stringForm[LENGTH - i - 1] = sequence % 2 == 0? 'H' : 'T';
+        sequence /= 2;
+    }
 }
