@@ -1,0 +1,3 @@
+#!/bin/bash
+set -x
+xinput set-button-map "Razer DeathAdder Respawn" 3 2 1 &
